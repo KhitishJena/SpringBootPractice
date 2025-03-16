@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController  				//
-@RequestMapping("/users")  		//
+@RequestMapping("/users")  		//this is for stating the resource path of the URI 
 public class UsersController {
 	
 	@GetMapping
