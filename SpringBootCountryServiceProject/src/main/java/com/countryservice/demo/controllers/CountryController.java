@@ -33,11 +33,14 @@ public class CountryController {
 	@GetMapping("/getcountries/{id}")
 	public Country getCountryById(@PathVariable int id) {
 
+		//postman--> http://localhost:8080/getcountries/2
 		return countryservice.getCountryById(id);
 	}
 
 	@GetMapping("/getcountries/countryname")
 	public Country getCountryByName(@RequestParam(value = "name") String countryName) {
+		
+		//postman--> http://localhost:8080/getcountries/countryname?name=india
 
 		return countryservice.getCountryByName(countryName);
 	}
