@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.countryservice.demo.beans.Country;
 import com.countryservice.demo.controllers.AddResponse;
+
+@Component   //used for injecting dependency annotation.
 
 public class CountryService {
 	
@@ -16,8 +20,8 @@ public class CountryService {
 		countryIdMap = new HashMap<Integer, Country>();
 		
 		Country indiaCountry = new Country(1, "India", "New Delhi");
-		Country usaCountry = new Country(1, "USA", "New York");
-		Country ukCountry = new Country(1, "UK", "London");
+		Country usaCountry = new Country(2, "USA", "New York");
+		Country ukCountry = new Country(3, "UK", "London");
 		
 		countryIdMap.put(1, indiaCountry);
 		countryIdMap.put(2, usaCountry);

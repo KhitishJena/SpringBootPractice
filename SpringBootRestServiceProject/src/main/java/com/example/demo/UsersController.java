@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 //query paramter URI:--> http://localhost:8080/users?page=3&limit=100
 
 
-@RestController  				//
-@RequestMapping("/users")  		//this is for stating the resource path of the URI 
+@RestController  				// it helps Springboot understands this is a rest controller class. all request hit this controller class.
+@RequestMapping("/users")  		//this is for stating the resource path of the URI. it can be declared both at class level or method level depending upon requirement. 
 public class UsersController {
 	
 	@GetMapping
