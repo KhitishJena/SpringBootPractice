@@ -6,17 +6,17 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity                     //this annotation helps in representing the bean class as the database table
-@Table(name="Country")      //this specifies the table that needs to be accessed in the db
+@Table(name="samplecountry")      //this specifies the table that needs to be accessed in the db
 public class Country {
 	
 	@Id                     //this annotation represents this column in db is a primary key
 	@Column(name = "id")    //this annotation maps the variables of the bean class to the database corresponding table columns
 	int id;
 	
-	@Column(name = "countryName")  //this annotation maps the variables of the bean class to the database corresponding table columns
-	String countryName;
+	@Column(name = "countryname")  //this annotation maps the variables of the bean class to the database corresponding table columns. 
+	String countryName;			   //donot give the names of the columns in database in Camelcase. it causes column not found error
 	
-	@Column(name = "countryCapital")  //this annotation maps the variables of the bean class to the database corresponding table columns
+	@Column(name = "countrycapital")  //this annotation maps the variables of the bean class to the database corresponding table columns
 	String countryCapital;
 	
 	// Default constructor
@@ -51,7 +51,5 @@ public class Country {
 	public void setCountryCapital(String countryCapital) {
 		this.countryCapital = countryCapital;
 	}
-	
-	
 
 }

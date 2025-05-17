@@ -4,84 +4,72 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import com.countryservice.demo.beans.Country;
 import com.countryservice.demo.controllers.AddResponse;
+import com.countryservice.demo.repositories.CountryRepository;
 
 @Component   //used for injecting dependency annotation.
+@Service     //this is specify that this is service class
 
 public class CountryService {
 	
-	static HashMap<Integer, Country> countryIdMap;
+	@Autowired
+	CountryRepository countryrep;
 	
-	public CountryService() 
-	{
-		countryIdMap = new HashMap<Integer, Country>();
+	public List<Country> getAllCountries() {
 		
-		Country indiaCountry = new Country(1, "India", "New Delhi");
-		Country usaCountry = new Country(2, "USA", "New York");
-		Country ukCountry = new Country(3, "UK", "London");
+		return countryrep.findAll();
 		
-		countryIdMap.put(1, indiaCountry);
-		countryIdMap.put(2, usaCountry);
-		countryIdMap.put(3, ukCountry);
-	}
-	
-	public List getAllCountries() {
-		
-		List countries = new ArrayList(countryIdMap.values());
-		return countries;
 	}
 
 	public Country getCountryById(int id) {
 		
-		Country country = countryIdMap.get(id);
-		return country;
+		return countryrep.findById(id).get();
 	}
 	
 	public Country getCountryByName(String countryName) {
 		
+		List<Country> countries = countryrep.findAll();
 		Country country = null;
-		for(int i:countryIdMap.keySet())
-		{
-			if(countryIdMap.get(i).getCountryName().equalsIgnoreCase(countryName))
-				country = countryIdMap.get(i);
+		
+		for(Country con:countries) {
+			if(con.getCountryName().equalsIgnoreCase(countryName))
+				country = con;
 		}
-		return country; 
+		return country;
 	}
 	
 	public Country addCountry(Country country) {
 		
 		country.setId(getMaxId());
-		countryIdMap.put(country.getId(), country);
+		countryrep.save(country);
 		return country;
 		
 	}
 	
-	// Utility to get the maximum id in the HashTable
-	public static int getMaxId() {
-		int max =0;
-		for (int id: countryIdMap.keySet())
-			if(max<=id)
-				max=id;
-		return max+1;
+	// Utility to get the maximum id
+	public int getMaxId() {
+		
+		return countryrep.findAll().size()+1;
 	}
 	
 	public Country updateCountry(Country country) {
 		
-		if(country.getId()>0)
-			countryIdMap.put(country.getId(), country);
+		countryrep.save(country);
 		return country;
 			
 	}
 	
 	public AddResponse deleteCountry(int id) {
 		
-		countryIdMap.remove(id);
-		AddResponse response = new AddResponse();
-		response.setMsg("^^^^^^^^^^^^Country id Deleted*************");
-		response.setId(id);
-		return response;
+		countryrep.deleteById(id);
+		AddResponse addRes = new AddResponse();
+		addRes.setMsg("Country "+id+" is deleted!");
+		addRes.setId(id);
+		return addRes;
 	}
 }

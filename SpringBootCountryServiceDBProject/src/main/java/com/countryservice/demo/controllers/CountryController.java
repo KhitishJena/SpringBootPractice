@@ -3,6 +3,8 @@ package com.countryservice.demo.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,49 +26,70 @@ public class CountryController {
 	CountryService countryservice;
 
 	@GetMapping("/getcountries")
-	public List getCountries() {
+	public List<Country> getCountries() {
 
 		// postman --> http://localhost:8080/getcountries
 		return countryservice.getAllCountries();
 	}
 
 	@GetMapping("/getcountries/{id}")
-	public Country getCountryById(@PathVariable int id) {
+	public ResponseEntity<Country> getCountryById(@PathVariable int id) {
 
 		// postman--> http://localhost:8080/getcountries/2
-		return countryservice.getCountryById(id);
+		try {
+			Country country = countryservice.getCountryById(id);
+			return new ResponseEntity<Country>(country, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 	}
 
 	@GetMapping("/getcountries/countryname")
-	public Country getCountryByName(@RequestParam(value = "name") String countryName) {
+	public ResponseEntity<Country> getCountryByName(@RequestParam(value = "name") String countryName) {
 
 		// postman--> http://localhost:8080/getcountries/countryname?name=india
+		try {
+			Country country = countryservice.getCountryByName(countryName);
+			return new ResponseEntity<Country>(country, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		}
 
-		return countryservice.getCountryByName(countryName);
 	}
 
 	@PostMapping("/addcountry")
 	public Country addCountry(@RequestBody Country country) {
 
 		// postman--> http://localhost:8080/addcountry
-		//input body--> { "countryName" : "Italyo", "countryCapital" : "Romeo" }
+		// input body--> { "countryName" : "Italyo", "countryCapital" : "Romeo" }
 
 		return countryservice.addCountry(country);
 	}
 
-	@PutMapping("/updatecountry")
-	public Country updateCountry(@RequestBody Country country) {
+	@PutMapping("/updatecountry/{id}")
+	public ResponseEntity<Country> updateCountry(@PathVariable(value="id") int id, @RequestBody Country country) {
 		
 		//postman ---> http://localhost:8080/updatecountry
 		//inputbody ----> {"id" : 4, "countryName" : "Italyo", "countryCapital" : "Romeo0" }
-
-		return countryservice.updateCountry(country);
+		try {
+		Country existCountry = countryservice.getCountryById(id);
+		existCountry.setCountryName(country.getCountryName());
+		existCountry.setCountryCapital(country.getCountryCapital());
+		
+		Country updatedCountry = countryservice.updateCountry(existCountry);
+		return new ResponseEntity<Country>(updatedCountry, HttpStatus.OK);
+		
+		}
+		
+		catch(Exception e) {
+			return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+		}
 	}
 
 	@DeleteMapping("/deletecountry/{id}")
 	public AddResponse deleteCountry(@PathVariable int id) {
-		
-		//postman ----> http://localhost:8080/deletecountry/4
+
+		// postman ----> http://localhost:8080/deletecountry/4
 
 		return countryservice.deleteCountry(id);
 	}
