@@ -39,6 +39,7 @@ public class CountryService {
 		for(Country con:countries) {
 			if(con.getCountryName().equalsIgnoreCase(countryName))
 				country = con;
+			System.out.println(country);
 		}
 		return country;
 	}
