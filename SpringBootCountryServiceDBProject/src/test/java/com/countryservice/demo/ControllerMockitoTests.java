@@ -52,4 +52,19 @@ public class ControllerMockitoTests {
 		assertEquals(mycountries.size(), res.getBody().size());
 		
 	}
+	
+	@Test
+	@Order(2)
+	public void test_getCountryById() {
+		
+		country = new Country(2, "USA", "NewYork");
+		int countryID=2;
+		
+		when(countryservice.getCountryById(countryID)).thenReturn(country);
+		ResponseEntity<Country> res = countrycontroller.getCountryById(countryID);
+		
+		assertEquals(HttpStatus.FOUND, res.getStatusCode());
+		System.out.println(res.getBody().getCountryName());
+		assertEquals(country.getCountryName(), res.getBody().getCountryName());
+	}
 }
