@@ -1,7 +1,6 @@
 package com.countryservice.demo.controllers;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
