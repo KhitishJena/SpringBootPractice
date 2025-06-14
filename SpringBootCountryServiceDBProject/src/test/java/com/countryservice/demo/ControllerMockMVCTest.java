@@ -164,7 +164,8 @@ public class ControllerMockMVCTest {
 		when(countryService.getCountryById(countryID)).thenReturn(country);
 		
 		this.mockMvc.perform(delete("/deletecountry/{id}",countryID))
-		.andExpect(status().isOk());		)
+		.andExpect(status().isOk())
+		.andDo(print());
 	}
 	
 }
